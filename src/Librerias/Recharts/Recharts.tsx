@@ -30,7 +30,10 @@ export const Recharts = () => {
                 <XAxis dataKey='x' />
                 <YAxis dataKey='y' />
                 <Tooltip />
-                <Line type="monotone" dataKey="y" stroke="#8884d8" dot={<CustomDot />} />
+                {/* Aqui se reenderiza un grafico lineal con svg en lugar de dots */}
+                {/* <Line type="monotone" dataKey="y" stroke="#8884d8" dot={<CustomDot />} /> */}
+                {/* Grafico lineal  */}
+                <Line type="monotone" dataKey="y" stroke="#3E83FF"  dot={false} />
             </LineChart>
         </ResponsiveContainer>)
 }

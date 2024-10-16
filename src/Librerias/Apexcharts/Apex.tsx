@@ -2,7 +2,7 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 import { datas } from '../../Datas';
 
-const generateVoltageData = (length) => {
+const generateVoltageData = (length:any) => {
   return Array.from({ length }, () => Math.floor(Math.random() * (150 - 120 + 1)) + 120);
 };
 

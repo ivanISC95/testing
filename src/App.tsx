@@ -13,10 +13,10 @@ function App() {
 
       </div>
       <section style={{ width: '1200px', height: '500px', background: 'white' }}>
-        {/* <Recharts /> */}
+        <Recharts />
         {/* <Plotly /> */}
         {/* <PruebaCharts /> */}
-        <Apex />
+        {/* <Apex /> */}
       </section>
     </>
   )
