@@ -3,20 +3,24 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ReferenceArea, R
 import { datas } from '../../Datas';
 
 
+const formatDate = (timestamp: string) => {
+    const date = new Date(timestamp)
+    const options : object = { day: '2-digit', month: 'short' }
+    return date.toLocaleDateString('en-US', options)
+};
+
 const initialData = datas.value.map((val, index) => ({
     name: datas.timestamp[index],
-    cost: val,
-    impression: Math.round(val * 100)
+    cost: val,    
 }));
 
-const getAxisYDomain = (from: any, to: any, ref: any, offset: any) => {
-    const refData: any = initialData.slice(from, to);
+const getAxisYDomain = (from : any, to : any, ref : any, offset : any) => {
+    const refData : any = initialData.slice(from, to);
     let [bottom, top] = [refData[0][ref], refData[0][ref]];
-    refData.forEach((d: any) => {
+    refData.forEach((d:any) => {
         if (d[ref] > top) top = d[ref];
         if (d[ref] < bottom) bottom = d[ref];
     });
-
     return [(bottom | 0) - offset, (top | 0) + offset];
 };
 
@@ -28,8 +32,7 @@ const ZoomableChart = () => {
     const [refAreaRight, setRefAreaRight] = useState('');
     const [top, setTop] = useState('dataMax+1');
     const [bottom, setBottom] = useState('dataMin');
-    const [top2, setTop2] = useState('dataMax+20');
-    const [bottom2, setBottom2] = useState('dataMin-20');
+    const [opacity, setOpacity] = useState({cost: 1});
 
     const zoom = () => {
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
@@ -38,13 +41,12 @@ const ZoomableChart = () => {
             return;
         }
 
-        const leftIndex: any = initialData.findIndex(d => d.name === refAreaLeft);
-        const rightIndex: any = initialData.findIndex(d => d.name === refAreaRight);
+        const leftIndex : any = initialData.findIndex(d => d.name === refAreaLeft);
+        const rightIndex : any = initialData.findIndex(d => d.name === refAreaRight);
 
         if (leftIndex < 0 || rightIndex < 0) return;
 
         const [newBottom, newTop] = getAxisYDomain(leftIndex, rightIndex, 'cost', 1);
-        const [newBottom2, newTop2] = getAxisYDomain(leftIndex, rightIndex, 'impression', 50);
 
         setRefAreaLeft('');
         setRefAreaRight('');
@@ -52,8 +54,6 @@ const ZoomableChart = () => {
         setRight(rightIndex);
         setBottom(newBottom);
         setTop(newTop);
-        setBottom2(newBottom2);
-        setTop2(newTop2);
     };
 
     const zoomOut = () => {
@@ -63,10 +63,20 @@ const ZoomableChart = () => {
         setRight('dataMax');
         setTop('dataMax+1');
         setBottom('dataMin');
-        setTop2('dataMax+50');
-        setBottom2('dataMin+50');
     };
-
+    
+    
+      const handleMouseEnter = (o:any) => {
+        const { dataKey } = o;
+    
+        setOpacity((op) => ({ ...op, [dataKey]: 0.5 }));
+      };
+    
+      const handleMouseLeave = (o : any) => {
+        const { dataKey } = o;
+    
+        setOpacity((op) => ({ ...op, [dataKey]: 1 }));
+      };
     return (
         <div className="highlight-bar-charts" style={{ userSelect: 'none', width: '100%' }}>
             <button type="button" className="btn update" onClick={zoomOut}>
@@ -75,19 +85,18 @@ const ZoomableChart = () => {
             <ResponsiveContainer width="100%" height={400}>
                 <LineChart
                     data={data}
-                    onMouseDown={(e: any) => setRefAreaLeft(e.activeLabel)}
-                    onMouseMove={(e: any) => refAreaLeft && setRefAreaRight(e.activeLabel)}
+                    onMouseDown={(e:any) => setRefAreaLeft(e.activeLabel)}
+                    onMouseMove={(e:any) => refAreaLeft && setRefAreaRight(e.activeLabel)}
                     onMouseUp={zoom}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis allowDataOverflow dataKey="name" domain={[left, right]} />
-                    <YAxis allowDataOverflow domain={[bottom, top]} yAxisId="1" />
-                    <YAxis orientation="right" allowDataOverflow domain={[bottom2, top2]} yAxisId="2" />
-                    <Legend />
+                    <XAxis allowDataOverflow dataKey="name" domain={[left, right]} tickFormatter={formatDate} />
+                    <YAxis allowDataOverflow domain={[bottom, top]} />
+                    <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}/>
                     <Tooltip />
-                    <Line yAxisId="1" type="monotone" dataKey="cost" stroke="#8884d8" dot={false} />
+                    <Line type="monotone" dataKey="cost" stroke="#8884d8" dot={false} strokeOpacity={opacity.cost}/>
                     {refAreaLeft && refAreaRight ? (
-                        <ReferenceArea yAxisId="1" x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
+                        <ReferenceArea x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
                     ) : null}
                 </LineChart>
             </ResponsiveContainer>
