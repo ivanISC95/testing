@@ -5,6 +5,7 @@ import { Recharts } from './Librerias/Recharts/Recharts'
 import { chartJS } from './Librerias/ChartJS/chartJS'
 import { PruebaCharts } from './Librerias/ChartJS/PruebaCharts'
 import { Apex } from './Librerias/Apexcharts/Apex'
+import { RechartsZoom } from './Librerias/Recharts/RechartsZoom'
 function App() {
   
   return (
@@ -13,7 +14,8 @@ function App() {
 
       </div>
       <section style={{ width: '1200px', height: '500px', background: 'white' }}>
-        <Recharts />
+        {/* <Recharts /> */}
+        <RechartsZoom />
         {/* <Plotly /> */}
         {/* <PruebaCharts /> */}
         {/* <Apex /> */}
