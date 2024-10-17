@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ReferenceArea, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, ReferenceArea, ResponsiveContainer, Legend } from 'recharts';
 import { datas } from '../../Datas';
 
 
@@ -83,6 +83,7 @@ const ZoomableChart = () => {
                     <XAxis allowDataOverflow dataKey="name" domain={[left, right]} />
                     <YAxis allowDataOverflow domain={[bottom, top]} yAxisId="1" />
                     <YAxis orientation="right" allowDataOverflow domain={[bottom2, top2]} yAxisId="2" />
+                    <Legend />
                     <Tooltip />
                     <Line yAxisId="1" type="monotone" dataKey="cost" stroke="#8884d8" dot={false} />
                     {refAreaLeft && refAreaRight ? (
