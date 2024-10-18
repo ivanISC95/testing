@@ -14,8 +14,8 @@ function App() {
 
       </div>
       <section style={{ width: '1200px', height: '500px', background: 'white' }}>
-        {/* <Recharts /> */}
-        <RechartsZoom />
+        <Recharts />
+        {/* <RechartsZoom /> */}
         {/* <Plotly /> */}
         {/* <PruebaCharts /> */}
         {/* <Apex /> */}
