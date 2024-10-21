@@ -1,113 +1,137 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-    Label,
     LineChart,
     Line,
-    CartesianGrid,
     XAxis,
     YAxis,
     Tooltip,
+    CartesianGrid,
     ReferenceArea,
     ResponsiveContainer,
 } from 'recharts';
 
-const initialData = [
-    { name: 1, cost: 4.11, impression: 100 },
-    { name: 2, cost: 2.39, impression: 120 },
-    { name: 3, cost: 1.37, impression: 150 },
-    { name: 4, cost: 1.16, impression: 180 },
-    { name: 5, cost: 2.29, impression: 200 },
-    { name: 6, cost: 3, impression: 499 },
-    { name: 7, cost: 0.53, impression: 50 },
-    { name: 8, cost: 2.52, impression: 100 },
-    { name: 9, cost: 1.79, impression: 200 },
-    { name: 10, cost: 2.94, impression: 222 },
-    { name: 11, cost: 4.3, impression: 210 },
-    { name: 12, cost: 4.41, impression: 300 },
-    { name: 13, cost: 2.1, impression: 50 },
-    { name: 14, cost: 8, impression: 190 },
-    { name: 15, cost: 0, impression: 300 },
-    { name: 16, cost: 9, impression: 400 },
-    { name: 17, cost: 3, impression: 200 },
-    { name: 18, cost: 2, impression: 50 },
-    { name: 19, cost: 3, impression: 100 },
-    { name: 20, cost: 7, impression: 100 },
+// Datos de ejemplo
+const series = [
+    {
+        name: 'Temperatura',
+        data: [
+            { date: '2024/10/09', value: Math.random() * 10 + 20 },
+            { date: '2024/10/10', value: Math.random() * 10 + 20 },
+            { date: '2024/10/11', value: Math.random() * 10 + 20 },
+            { date: '2024/10/12', value: Math.random() * 10 + 20 },
+            { date: '2024/10/13', value: Math.random() * 10 + 20 },
+            { date: '2024/10/14', value: Math.random() * 10 + 20 },
+            { date: '2024/10/15', value: Math.random() * 10 + 20 },
+            { date: '2024/10/16', value: Math.random() * 10 + 20 },
+            { date: '2024/10/17', value: Math.random() * 10 + 20 },
+            { date: '2024/10/18', value: Math.random() * 10 + 20 },
+            { date: '2024/10/19', value: Math.random() * 10 + 20 },
+            { date: '2024/10/20', value: Math.random() * 10 + 20 },
+        ],
+    },
+    {
+        name: 'Voltaje',
+        data: [
+            { date: '2024/10/10', value: Math.random() * 5 + 10 },
+            { date: '2024/10/11', value: Math.random() * 5 + 10 },
+            { date: '2024/10/12', value: Math.random() * 5 + 10 },
+            { date: '2024/10/13', value: Math.random() * 5 + 10 },
+            { date: '2024/10/14', value: Math.random() * 5 + 10 },
+            { date: '2024/10/20', value: Math.random() * 5 + 10 },
+            { date: '2024/10/18', value: Math.random() * 5 + 10 },
+            { date: '2024/10/19', value: Math.random() * 5 + 10 },
+            { date: '2024/10/20', value: Math.random() * 5 + 10 },
+        ],
+    },
+    {
+        name: 'Compresor',
+        data: [
+            { date: '2024/10/18', value: Math.random() * 15 + 30 },
+            { date: '2024/10/19', value: Math.random() * 15 + 30 },
+            { date: '2024/10/20', value: Math.random() * 15 + 30 },
+            { date: '2024/10/21', value: Math.random() * 15 + 30 },
+            { date: '2024/10/23', value: Math.random() * 15 + 30 },
+            { date: '2024/10/25', value: Math.random() * 15 + 30 },
+        ],
+    },
 ];
 
-const getAxisYDomain = (from, to, ref, offset) => {
-    const refData = initialData.slice(from - 1, to);
-    let [bottom, top] = [refData[0][ref], refData[0][ref]];
-    refData.forEach((d) => {
-        if (d[ref] > top) top = d[ref];
-        if (d[ref] < bottom) bottom = d[ref];
+// Función para transformar los datos
+const transformData = (series) => {
+    const dataMap = {};
+
+    series.forEach((serie) => {
+        serie.data.forEach((point) => {
+            const { date, value } = point;
+
+            if (!dataMap[date]) {
+                dataMap[date] = { date }; // Inicializa el objeto con la fecha
+            }
+
+            dataMap[date][serie.name] = value; // Agrega el valor de la serie
+        });
     });
 
-    return [(bottom | 0) - offset, (top | 0) + offset];
+    return Object.values(dataMap); // Convierte el mapa en un array
 };
 
+const chartData = transformData(series);
+
 export const Recharts = () => {
-    const initialState = {
-        data: initialData,
+    const [state, setState] = useState({
         left: 'dataMin',
         right: 'dataMax',
         refAreaLeft: '',
         refAreaRight: '',
-        top: 'dataMax+1',
-        bottom: 'dataMin-1',
-        top2: 'dataMax+20',
-        bottom2: 'dataMin-20',
-        animation: true,
-    };
-
-    const [state, setState] = React.useState(initialState);
+        bottom: 'dataMin',
+        top: 'dataMax',
+    });
 
     const zoom = () => {
-        let { refAreaLeft, refAreaRight } = state;
+        const { refAreaLeft, refAreaRight } = state;
 
         if (refAreaLeft === refAreaRight || refAreaRight === '') {
-            setState({
-                ...state,
-                refAreaLeft: '',
-                refAreaRight: '',
-            });
+            setState({ ...state, refAreaLeft: '', refAreaRight: '' });
             return;
         }
 
-        // xAxis domain
-        if (refAreaLeft > refAreaRight) [refAreaLeft, refAreaRight] = [refAreaRight, refAreaLeft];
+        const newLeft = refAreaLeft;
+        const newRight = refAreaRight;
 
-        // yAxis domain
-        const [bottom, top] = getAxisYDomain(refAreaLeft, refAreaRight, 'cost', 1);
-        const [bottom2, top2] = getAxisYDomain(refAreaLeft, refAreaRight, 'impression', 50);
+        const newBottom = Math.min(
+            ...chartData
+                .filter(item => item.date >= newLeft && item.date <= newRight)
+                .map(item => Math.min(item.Temperatura || Infinity, item.Voltaje || Infinity, item.Compresor || Infinity))
+        );
+
+        const newTop = Math.max(
+            ...chartData
+                .filter(item => item.date >= newLeft && item.date <= newRight)
+                .map(item => Math.max(item.Temperatura || -Infinity, item.Voltaje || -Infinity, item.Compresor || -Infinity))
+        );
 
         setState({
-            ...state,
+            left: newLeft,
+            right: newRight,
+            bottom: newBottom,
+            top: newTop,
             refAreaLeft: '',
             refAreaRight: '',
-            left: refAreaLeft,
-            right: refAreaRight,
-            bottom,
-            top,
-            bottom2,
-            top2,
         });
     };
 
     const zoomOut = () => {
         setState({
-            ...state,
-            refAreaLeft: '',
-            refAreaRight: '',
             left: 'dataMin',
             right: 'dataMax',
-            top: 'dataMax+1',
             bottom: 'dataMin',
-            top2: 'dataMax+50',
-            bottom2: 'dataMin+50',
+            top: 'dataMax',
+            refAreaLeft: '',
+            refAreaRight: '',
         });
     };
 
-    const { data, left, right, refAreaLeft, refAreaRight, top, bottom, top2, bottom2 } = state;
+    const { left, right, refAreaLeft, refAreaRight, bottom, top } = state;
 
     return (
         <div className="highlight-bar-charts" style={{ userSelect: 'none', width: '100%' }}>
@@ -117,20 +141,20 @@ export const Recharts = () => {
 
             <ResponsiveContainer width="100%" height={400}>
                 <LineChart
-                    data={data}
+                    data={chartData}
                     onMouseDown={(e) => setState({ ...state, refAreaLeft: e.activeLabel })}
                     onMouseMove={(e) => state.refAreaLeft && setState({ ...state, refAreaRight: e.activeLabel })}
                     onMouseUp={zoom}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis allowDataOverflow dataKey="name" domain={[left, right]} type="number" />
-                    <YAxis allowDataOverflow domain={[bottom, top]} type="number" yAxisId="1" />
-                    <YAxis orientation="right" allowDataOverflow domain={[bottom2, top2]} type="number" yAxisId="2" />
+                    <XAxis dataKey="date" domain={[left, right]} />
+                    <YAxis domain={[bottom, top]} />
                     <Tooltip />
-                    <Line yAxisId="1" type="natural" dataKey="cost" stroke="#8884d8" animationDuration={300} />
-                    <Line yAxisId="2" type="natural" dataKey="impression" stroke="#82ca9d" animationDuration={300} />
+                    {series.map((serie) => (
+                        <Line key={serie.name} type="monotone" dataKey={serie.name} stroke={serie.name === 'Temperatura' ? '#8884d8' : serie.name === 'Voltaje' ? '#82ca9d' : '#ff7300'} />
+                    ))}
                     {refAreaLeft && refAreaRight ? (
-                        <ReferenceArea yAxisId="1" x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
+                        <ReferenceArea x1={refAreaLeft} x2={refAreaRight} strokeOpacity={0.3} />
                     ) : null}
                 </LineChart>
             </ResponsiveContainer>
