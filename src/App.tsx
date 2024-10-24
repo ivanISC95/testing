@@ -1,11 +1,6 @@
 import './App.css'
-
-import { Plotly } from './Librerias/Plotly/Plotly'
-import { Recharts } from './Librerias/Recharts/Recharts'
-import { chartJS } from './Librerias/ChartJS/chartJS'
-import { PruebaCharts } from './Librerias/ChartJS/PruebaCharts'
-import { Apex } from './Librerias/Apexcharts/Apex'
-import { RechartsZoom } from './Librerias/Recharts/RechartsZoom'
+import '@mantine/charts/styles.css';
+import { MantineGraph } from './Librerias/Mantine/MantineGraph'
 function App() {
   
   return (
@@ -13,12 +8,13 @@ function App() {
       <div style={{ width: '1000px', height: '5rem', background: 'blue' }}>
 
       </div>
-      <section style={{ width: '1200px', height: '500px', background: 'white' }}>
-        <Recharts />
+      <section style={{ width: '1200px', height: '500px', background: '' }}>
+        {/* <Recharts /> */}
         {/* <RechartsZoom /> */}
         {/* <Plotly /> */}
         {/* <PruebaCharts /> */}
         {/* <Apex /> */}
+        <MantineGraph />
       </section>
     </>
   )
