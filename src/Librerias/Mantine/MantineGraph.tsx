@@ -1,5 +1,6 @@
 import React from 'react'
 import { LineChart } from '@mantine/charts';
+import { datas3, transformTelemetryData } from '../../Datas';
 
 export const MantineGraph = () => {
   const data = [
@@ -34,6 +35,7 @@ export const MantineGraph = () => {
       Tomatoes: 2290,
     },
   ];
+  console.log(transformTelemetryData(datas3))
   return (
     <section>
       <LineChart
