@@ -1,5 +1,5 @@
 import React from 'react'
-import { LineChart } from '@mantine/charts';
+import { CompositeChart, LineChart } from '@mantine/charts';
 import { datas3, transformTelemetryData } from '../../Datas';
 
 export const MantineGraph = () => {
@@ -38,15 +38,15 @@ export const MantineGraph = () => {
   console.log(transformTelemetryData(datas3))
   return (
     <section>
-      <LineChart
+      <CompositeChart
       h={300}
-      data={data}
+      data={transformTelemetryData(datas3)}
       dataKey="date"
       tooltipAnimationDuration={200}
       series={[
-        { name: 'Apples', color: 'indigo.6' },
-        { name: 'Oranges', color: 'blue.6' },
-        { name: 'Tomatoes', color: 'teal.6' },
+        { name: 'internal_temperature', color: 'indigo.6',type:'line' },
+        { name: 'compressor_state', color: 'blue.6' ,type:'bar'},
+        { name: 'voltage_consumption', color: 'teal.6',type:'line' },
       ]}
     />
     </section>
