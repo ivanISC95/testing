@@ -16369,5 +16369,146 @@ const datas2 = {
       }
     ],
 }
+const datas3 = {
+    "Telemetry": {
+      "compressor_state": {
+        "duration": {
+          "value": [
+            89.28587962962963,
+            74.47106481481481,
+            58.10069444444444,
+            87.88773148148148,
+            59.539351851851855
+          ],
+          "timestamp": [
+            "2024-09-16",
+            "2024-09-17",
+            "2024-09-18",
+            "2024-09-19",
+            "2024-09-20"
+          ]
+        }
+      },
+      "internal_temperature": {
+        "avg": {
+          "value": [
+            10.175000190734863,
+            10.614285605294365,
+            9.866666793823242,
+            9.819999885559081,
+            10.433333396911621
+          ],
+          "timestamp": [
+            "2024-09-16 00:00:00",
+            "2024-09-16 00:30:00",
+            "2024-09-16 01:00:00",
+            "2024-09-16 01:30:00",
+            "2024-09-16 02:00:00"
+          ]
+        },
+        
+      },
+      "voltage_consumption": {
+        "avg": {
+          "value": [
+            127.5,
+            124.14285714285714,
+            121.66666666666667,
+            123.2,
+            126.66666666666667
+          ],
+          "timestamp": [
+            "2024-09-16 00:00:00",
+            "2024-09-16 00:30:00",
+            "2024-09-16 01:00:00",
+            "2024-09-16 01:30:00",
+            "2024-09-16 02:00:00"
+          ]
+        }
+      }
+    },
+    "Alerts": [
+      {
+        "Alert": "COMPRESSOR_FAIL",
+        "Date": "2024-09-28T02:19:01.968000"
+      },
+      {
+        "Alert": "TEMPERATURE_FAIL",
+        "Date": "2024-09-28T01:50:56.116000"
+      },
+      {
+        "Alert": "TEMPERATURE_FAIL",
+        "Date": "2024-09-28T01:31:47.676000"
+      },
+      {
+        "Alert": "TEMPERATURE_FAIL",
+        "Date": "2024-09-26T17:59:01.179000"
+      },
+      {
+        "Alert": "TEMPERATURE_FAIL",
+        "Date": "2024-09-26T02:32:29.757000"
+      },
+      {
+        "Alert": "COMPRESSOR_RUN_TIME_EXCEEDED_ALERT",
+        "Date": "2024-09-19T02:00:16.445000"
+      },
+      {
+        "Alert": "DISCONNECTION_ALERT",
+        "Date": "2024-09-28T19:00:00Z"
+      },
+      {
+        "Alert": "RECONNECTION",
+        "Date": "2024-10-03T20:00:00Z"
+      },
+      {
+        "Alert": "DISCONNECTION_ALERT",
+        "Date": "2024-09-28T19:00:00Z"
+      },
+      {
+        "Alert": "RECONNECTION",
+        "Date": "2024-10-03T20:00:00Z"
+      },
+      {
+        "Alert": "DISCONNECTION_ALERT",
+        "Date": "2024-09-28T19:00:00Z"
+      },
+      {
+        "Alert": "RECONNECTION",
+        "Date": "2024-10-03T20:00:00Z"
+      }
+    ],
+}
+function transformTelemetryData(datas:any) {
+  const result :any = [];
+  
+  // Procesar compressor_state
+  const compressorState = datas.Telemetry.compressor_state.duration;
+  compressorState.value.forEach((value:any, index:any) => {
+      result.push({
+          date: compressorState.timestamp[index],
+          compressor_state: value
+      });
+  });
 
-export { datas,datas2 }
+  // Procesar internal_temperature
+  const internalTemperature = datas.Telemetry.internal_temperature.avg;
+  internalTemperature.value.forEach((value:any, index:any) => {
+      result.push({
+          date: internalTemperature.timestamp[index],
+          internal_temperature: value
+      });
+  });
+
+  // Procesar voltage_consumption
+  const voltageConsumption = datas.Telemetry.voltage_consumption.avg;
+  voltageConsumption.value.forEach((value:any, index:any) => {
+      result.push({
+          date: voltageConsumption.timestamp[index],
+          voltage_consumption: value
+      });
+  });
+
+  return result;
+}
+
+export { datas,datas2,datas3 ,transformTelemetryData}
