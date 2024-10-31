@@ -33,11 +33,9 @@ export const PlotlyCharts = () => {
         }
     };
 
-    // Preparar datos para la gráfica lineal
     const xTemps = datas.Telemetry.internal_temperature.timestamp;
     const yTemps = datas.Telemetry.internal_temperature.value;
 
-    // Preparar datos para la gráfica de dispersión
     const xAlertas = datas.Telemetry.Alertas.map(alert => new Date(alert.Date));
     const yAlertas = xAlertas.map((_, index) => index + 1); // Asignar valores para el eje Y
 
@@ -57,7 +55,8 @@ export const PlotlyCharts = () => {
         mode: 'markers',
         type: 'scatter',
         name: 'Alertas',
-        marker: { color: 'red', size: 10 }
+        marker: { color: 'red', size: 10 },
+        yaxis: 'y2' // Usar el segundo eje Y
     };
 
     const data = [trace1, trace2];
@@ -69,7 +68,14 @@ export const PlotlyCharts = () => {
             type: 'date'
         },
         yaxis: {
-            title: 'Valores',
+            title: 'Temperatura (°C)',
+            side: 'left'
+        },
+        yaxis2: {
+            title: 'Alertas',
+            overlaying: 'y',
+            side: 'right',
+            showgrid: false,
             tickvals: yAlertas,
             ticktext: datas.Telemetry.Alertas.map(alert => alert.Alert)
         }
