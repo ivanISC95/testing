@@ -1,46 +1,12 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
-import { datas } from '../../Datas';
+import { dataApex } from '../../Datas';
 
-const generateVoltageData = (length:any) => {
-  return Array.from({ length }, () => Math.floor(Math.random() * (150 - 120 + 1)) + 120);
-};
 
-const voltageData = generateVoltageData(datas.value.length);
-
-const orderServiceData = [{
-  x: new Date("2024-10-08").getTime(), // Convertir la fecha a timestamp
-  y: 1,
-  description: 'Orden de Servicio: 1' 
-}];
-
-export const Apex = () => {
-  const series = [
-    {
-      name: 'Temperatura',
-      type: 'line',
-      data: datas.value
-    },
-    {
-      name: 'Voltaje',
-      type: 'line',
-      data: voltageData
-    },
-    {
-      name: 'Orden de Servicio',
-      type: 'scatter',
-      data: orderServiceData,
-      markers: {
-        size: 10, // Aumenta el tamaño del ícono del scatter
-        colors: ['#FF4560'], // Puedes cambiar el color si lo deseas
-        shape: 'circle' // Forma del marcador
-      }
-    }
-  ];
-
+export const Apex = () => {  
   const options = {
     chart: {
-      type: 'line' as const,
+      // type: 'line' as const,
       zoom: {
         enabled: true,
         type: 'x' as const,
@@ -57,8 +23,7 @@ export const Apex = () => {
       text: 'Gráfico de Temperatura, Voltaje y Orden de Servicio'
     },
     xaxis: {
-      type: 'datetime' as const,
-      categories: datas.timestamp,
+      type: 'datetime' as const,      
       labels: {
         rotate: -45
       },
@@ -70,28 +35,37 @@ export const Apex = () => {
       curve: 'smooth' as const
     },
     tooltip: {
-      shared: true,
-      intersect: false,
-      x: {
-        formatter: (value) => {
-          const date = new Date(value);
-          return date.toLocaleString(); // Muestra la fecha en formato local
-        }
-      },
-      y: {
-        formatter: (value, { seriesIndex, dataPointIndex }) => {
-          if (seriesIndex === 2) { // Si es la serie de Orden de Servicio
-            return orderServiceData[dataPointIndex].description; // Muestra la descripción
-          }
-          return `Valor: ${value}`; // Formato para los valores de temperatura y voltaje
-        }
-      }
+      // shared: true,
+      // intersect: false,
+      // x: {
+      //   formatter: (value:any) => {
+      //     const date = new Date(value);
+      //     return date.toLocaleString(); // Muestra la fecha en formato local
+      //   }
+      // },
+      // y: {
+        
+      // }
+      enabled: true,
+        shared: true,
+        intersect: false,
+        y: {
+          formatter: function (val:any) {
+          return val;
+        },
+        },
+        x: {
+          show: true,
+        },
+        marker: {
+            show: true
+          },
     }
   };
 
   return (
     <div>
-      <Chart options={options} series={series} type="line" height={350} />
+      <Chart options={options} series={dataApex} type="line" height={350} />
     </div>
   );
 }

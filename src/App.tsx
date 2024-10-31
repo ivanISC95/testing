@@ -1,6 +1,7 @@
 import './App.css'
 import '@mantine/charts/styles.css';
 import { MantineGraph } from './Librerias/Mantine/MantineGraph'
+import { Apex } from './Librerias/Apexcharts/Apex';
 function App() {
   
   return (
@@ -13,9 +14,9 @@ function App() {
         {/* <RechartsZoom /> */}
         {/* <RechartBrush /> */}
         {/* <Plotly /> */}
-        {/* <PruebaCharts /> */}
-        {/* <Apex /> */}
-        <MantineGraph />
+        {/* <PruebaCharts /> */}        
+        {/* <MantineGraph /> */}
+        <Apex />
       </section>
     </>
   )
