@@ -2,6 +2,7 @@ import './App.css'
 import '@mantine/charts/styles.css';
 import { MantineGraph } from './Librerias/Mantine/MantineGraph'
 import { Apex } from './Librerias/Apexcharts/Apex';
+import CombinedChart from './Librerias/Recharts/CombinedChart';
 function App() {
   
   return (
@@ -16,7 +17,8 @@ function App() {
         {/* <Plotly /> */}
         {/* <PruebaCharts /> */}        
         {/* <MantineGraph /> */}
-        <Apex />
+        {/* <Apex /> */}
+        <CombinedChart />
       </section>
     </>
   )

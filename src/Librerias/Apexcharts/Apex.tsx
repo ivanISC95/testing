@@ -1,15 +1,14 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { dataApex } from '../../Datas';
-
-
+import { iconoEjemplo } from '../../Icons/Icons';
+import vector from '../../Icons/Vector.svg'
 export const Apex = () => {  
   const options = {
     chart: {
-      // type: 'line' as const,
       zoom: {
         enabled: true,
-        type: 'x' as const,
+        type: 'x',
         autoScaleYaxis: true
       },
       toolbar: {
@@ -23,7 +22,7 @@ export const Apex = () => {
       text: 'Gráfico de Temperatura, Voltaje y Orden de Servicio'
     },
     xaxis: {
-      type: 'datetime' as const,      
+      type: 'datetime',
       labels: {
         rotate: -45
       },
@@ -31,37 +30,47 @@ export const Apex = () => {
     dataLabels: {
       enabled: false // Desactiva las etiquetas de datos en las líneas
     },
+    markers: {
+      size: 0, // Sin marcadores para el gráfico lineal
+    },
     stroke: {
-      curve: 'smooth' as const
+      curve: 'straight',
     },
     tooltip: {
-      // shared: true,
-      // intersect: false,
-      // x: {
-      //   formatter: (value:any) => {
-      //     const date = new Date(value);
-      //     return date.toLocaleString(); // Muestra la fecha en formato local
-      //   }
-      // },
-      // y: {
-        
-      // }
       enabled: true,
-        shared: true,
-        intersect: false,
-        y: {
-          formatter: function (val:any) {
+      shared: true,
+      intersect: false,
+      y: {
+        formatter: function (val) {
           return val;
         },
-        },
-        x: {
-          show: true,
-        },
-        marker: {
-            show: true
-          },
+      },
+      x: {
+        show: true,
+      },
+      marker: {
+        show: true
+      },
     }
   };
+
+  // Verifica si quieres usar marcadores de imagen en un gráfico de dispersión
+  const isScatter = dataApex.some(series => series.type === 'scatter'); // Ajusta según tu lógica
+
+  if (isScatter) {
+    options.markers = {
+      fill: {
+        type: 'image',
+        opacity: 1,
+        image: {
+          src: [vector],
+          width: 40,
+          height: 40
+        }
+      },
+      size: 6, // Tamaño de los marcadores de imagen
+    };
+  }
 
   return (
     <div>
