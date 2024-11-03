@@ -1,6 +1,7 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
-import vectorPNG from '../../Icons/Vector2.png'
+import vectorPNG from '../../Icons/Vector.svg';
+
 const dataApex = [
   {
     name: "Temperatura",
@@ -24,7 +25,7 @@ const dataApex = [
       11.7, 13, 8.3, 8, 9, 8.3, 8.7, 8.7, 12.3, 9,
       5, 3.3, 4, 4.7, 7.7, 13, 12, 9.3, 9.3, 9, 8,
     ],
-    marker: { color: 'blue' },
+    marker: { color: 'blue', size: 8 }, // Marcador visible
   },
   {
     name: "Alerta Alta Demanda Compresor",
@@ -33,23 +34,37 @@ const dataApex = [
     x: ["2024-10-31 16:20:48 GMT"],
     y: [10],
     marker: {
-      symbol: 'star',
       size: 10,
-      color: 'red',
+      color: 'rgba(255, 0, 0, 0)', // Hacer el marcador invisible
     },
   },
 ];
+
+const layout = {
+  title: 'Gráfico Combinado de Temperatura y Alertas',
+  xaxis: { title: 'Fecha y Hora' },
+  yaxis: { title: 'Temperatura (°C)' },
+  showlegend: true,
+  images: [
+    {
+      source: vectorPNG, // Usa la variable importada
+      x: "2024-10-31 16:20:48 GMT",
+      y: 10,
+      xref: 'x',
+      yref: 'y',
+      sizex: 1.5, // Ajusta el tamaño de la imagen según sea necesario
+      sizey: 1.5,
+      opacity: 10,
+      layer: '',
+    },
+  ],
+};
 
 const CombinedChart = () => {
   return (
     <Plot
       data={dataApex}
-      layout={{
-        title: 'Gráfico Combinado de Temperatura y Alertas',
-        xaxis: { title: 'Fecha y Hora' },
-        yaxis: { title: 'Temperatura (°C)' },
-        showlegend: true,
-      }}
+      layout={layout}
       config={{ responsive: true }}
     />
   );
