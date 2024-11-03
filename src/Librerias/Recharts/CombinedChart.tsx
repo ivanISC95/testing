@@ -1,12 +1,12 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
-import vectorPNG from '../../Icons/Vector.svg';
+import vectorPNG from '../../Icons/Vector2.png';
 
 const dataApex = [
   {
     name: "Temperatura",
-    type: "scatter",
-    mode: "lines+markers",
+    type: "line",
+    mode: "lines",
     x: [
       "2024-10-30 16:20:48 GMT", "2024-10-30 17:17:32 GMT", "2024-10-30 22:05:40 GMT",
       "2024-10-30 23:05:42 GMT", "2024-10-31 00:06:40 GMT", "2024-10-31 01:06:42 GMT",
@@ -21,40 +21,40 @@ const dataApex = [
       "2024-10-31 22:21:04 GMT",
     ],
     y: [
-      6.3, 3.7, 4, 3.3, 4.7, 3, 3.7, 3.3, 8, 9,
+      6.3, 3.7, 4, 3.3, 4.7, -3, 3.7, 3.3, 8, 9,
       11.7, 13, 8.3, 8, 9, 8.3, 8.7, 8.7, 12.3, 9,
       5, 3.3, 4, 4.7, 7.7, 13, 12, 9.3, 9.3, 9, 8,
-    ],
-    marker: { color: 'blue', size: 8 }, // Marcador visible
+    ],    
   },
   {
     name: "Alerta Alta Demanda Compresor",
     type: "scatter",
     mode: "markers",
     x: ["2024-10-31 16:20:48 GMT"],
-    y: [10],
+    y: 'Event',
     marker: {
       size: 10,
-      color: 'rgba(255, 0, 0, 0)', // Hacer el marcador invisible
+      color: 'rgba(0,0,0,0)', // Hacer el marcador invisible
     },
   },
 ];
 
 const layout = {
   title: 'Gráfico Combinado de Temperatura y Alertas',
-  xaxis: { title: 'Fecha y Hora' },
   yaxis: { title: 'Temperatura (°C)' },
+  xaxis : { tickformat : ''},
   showlegend: true,
+  // legend : { orientation:'h'},
   images: [
     {
       source: vectorPNG, // Usa la variable importada
       x: "2024-10-31 16:20:48 GMT",
-      y: 10,
+      y: 0,
       xref: 'x',
       yref: 'y',
-      sizex: 1.5, // Ajusta el tamaño de la imagen según sea necesario
-      sizey: 1.5,
-      opacity: 10,
+      sizex: 0.8, 
+      sizey: 0.8,
+      opacity: 1,
       layer: '',
     },
   ],
@@ -66,6 +66,7 @@ const CombinedChart = () => {
       data={dataApex}
       layout={layout}
       config={{ responsive: true }}
+      style={{width:'100%',height:'100%'}}
     />
   );
 };
