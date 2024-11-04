@@ -1,6 +1,6 @@
 import Plot from 'react-plotly.js';
 import vectorPNG from '../../Icons/Vector2.png';
-import { datas3 } from '../../Datas';
+import { datas2, datas3 } from '../../Datas';
 
 const dataApex = [
   {
@@ -52,8 +52,8 @@ const layout = {
   images: [
     {
       source: vectorPNG, // Usa la variable importada
-      x: "2024-10-31 16:20:48",
-      y: -4,
+      x: "2024-09-19 07:30:00",
+      y: 20,
       xref: 'x',
       yref: 'y',
       sizex: 3*24*60*60*1000, 
@@ -63,28 +63,39 @@ const layout = {
     },
   ],
 };
-const aux = datas3.Telemetry.internal_temperature.avg.value
+const telemetria :any = []
 
-console.log(Math.min(...aux))
-
-// Asegurarse de que `y` sea un arreglo de números
-const temperatureValues = dataApex[0].y;
-
-if (Array.isArray(temperatureValues) && temperatureValues.every(value => typeof value === 'number')) {
-  // Convertir a números y filtrar no-números
-  const numericTemperatures = temperatureValues.map(value => Number(value)).filter(value => !isNaN(value));
-  
-  // Obtener el valor mínimo de temperatura
-  const minTemperature = Math.min(...numericTemperatures);
-  
-  console.log("El valor mínimo de temperatura es:", minTemperature);
-} else {
-  console.error("Los valores de temperatura no son válidos.");
+if(datas2.Telemetry.internal_temperature.avg.value){
+  telemetria.push({
+    name: "Temperatura",
+    type: "line",
+    mode: "lines",   
+    line: {
+      color: 'rgba(255, 0, 0, 1)', 
+      width: 1,
+    }, 
+    x: datas2.Telemetry.internal_temperature.avg.timestamp,
+    y: datas2.Telemetry.internal_temperature.avg.value,    
+  })
 }
+if(datas2.Telemetry.voltage_consumption.avg.value){
+  telemetria.push({
+    name: "Voltaje",
+    type: "line",
+    mode: "lines",   
+    line: {
+      color: 'yellow', 
+      width: 1,
+    }, 
+    x: datas2.Telemetry.voltage_consumption.avg.timestamp,
+    y: datas2.Telemetry.voltage_consumption.avg.value,    
+  })
+}
+console.log(telemetria)
 const CombinedChart = () => {
   return (
     <Plot
-      data={dataApex}
+      data={telemetria}
       layout={layout}
       config={{ responsive: true }}
       style={{width:'100%',height:'100%'}}
