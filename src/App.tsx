@@ -7,10 +7,10 @@ function App() {
   
   return (
     <>
-      <div style={{ width: '1000px', height: '5rem', background: 'blue' }}>
+      <div style={{ width: '1000px', height: '5rem', background: '' }}>
 
       </div>
-      <section style={{ width: '100%', height: '500px', background: 'blue' }}>
+      <section style={{ width: '100%', height: '500px', background: '' }}>
         {/* <Recharts /> */}
         {/* <RechartsZoom /> */}
         {/* <RechartBrush /> */}

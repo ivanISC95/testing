@@ -1,104 +1,148 @@
 import Plot from 'react-plotly.js';
 import vectorPNG from '../../Icons/Vector2.png';
-import { datas2, datas3 } from '../../Datas';
+import { datas2 } from '../../Datas';
 
-const dataApex = [
-  {
-    name: "Temperatura",
-    type: "line",
-    mode: "lines",   
-    line: {
-      color: 'rgba(255, 0, 0, 1)', 
-      width: 1,
-    }, 
-    x: [
-      "2024-10-30 16:20:48", "2024-10-30 17:17:32", "2024-10-30 22:05:40",
-      "2024-10-30 23:05:42", "2024-10-31 00:06:40", "2024-10-31 01:06:42",
-      "2024-10-31 01:20:27", "2024-10-31 02:20:12", "2024-10-31 03:20:13",
-      "2024-10-31 04:20:17", "2024-10-31 05:20:19", "2024-10-31 05:36:51",
-      "2024-10-31 06:20:22", "2024-10-31 07:20:25", "2024-10-31 08:20:28",
-      "2024-10-31 09:20:31", "2024-10-31 10:20:34", "2024-10-31 11:20:36",
-      "2024-10-31 12:06:26", "2024-10-31 12:20:37", "2024-10-31 13:20:39",
-      "2024-10-31 14:20:42", "2024-10-31 15:20:44", "2024-10-31 16:20:48",
-      "2024-10-31 17:20:50", "2024-10-31 18:20:53", "2024-10-31 18:36:04",
-      "2024-10-31 19:20:56", "2024-10-31 20:20:58", "2024-10-31 21:21:01",
-      "2024-10-31 22:21:04",
-    ],
-    y: [
-      6.3, 3.7, 4, 3.3, 4.7, -3, 3.7, 3.3, 8, 9,
-      11.7, 13, 8.3, 8, 9, 8.3, 8.7, 8.7, 12.3, 9,
-      5, 3.3, 4, 4.7, 7.7, 13, 12, 9.3, 9.3, 9, 8,
-    ],    
-  },
-  {
-    name: "Alerta Alta Demanda Compresor",
-    type: "scatter",
-    mode: "markers",
-    x: ["2024-10-31 16:20:48"],
-    y: [-4],
-    marker: {
-      size: 20,
-      symbol : 'circle',
-      color: 'rgba(0,0,0,0)', // Hacer el marcador invisible
-    },
-  },
-];
 
-const layout = {  
-  yaxis: { title: 'Temperatura (°C)' },
-  xaxis : { tickformat : ''},
+const layout = {
+  // yaxis: { title: 'Temperatura (°C)' },
+  xaxis: { tickformat: '%d-%m' },
   showlegend: true,
- legend : { orientation:'h'},
+  hovermode: 'x',
+  legend: { orientation: 'h' },
+  //  hoverlabel: { bgcolor: "#F8F9FA" }, 
+  font: {
+    family: 'Courier New, monospace',
+    size: 12,
+    color: '#868E96'
+  },
   images: [
     {
       source: vectorPNG, // Usa la variable importada
-      x: "2024-09-19 07:30:00",
-      y: 20,
+      x: "2024-09-22 00:00:00",
+      y: -4,
       xref: 'x',
       yref: 'y',
-      sizex: 3*24*60*60*1000, 
-      sizey: 1.2,
+      sizex: 3 * 24 * 60 * 60 * 1000,
+      sizey: 1.7,
+      opacity: 1,
+      layer: '',
+    },
+    {
+      source: vectorPNG, // Usa la variable importada
+      x: "2024-09-24 00:00:00",
+      y: -4,
+      xref: 'x',
+      yref: 'y',
+      sizex: 3 * 24 * 60 * 60 * 1000,
+      sizey: 1.7,
       opacity: 1,
       layer: '',
     },
   ],
+  shapes: [
+    {
+      type: 'rect',  // El tipo de la forma es un rectángulo
+      x0: 0,  // Comienza en el inicio del eje X (ajusta según los datos)
+      x1: 1,  // Termina al final del eje X (ajusta según los datos)
+      y0: 20, // Comienza en el valor Y de 20
+      y1: 25, // Termina en el valor Y de 25
+      xref: 'paper',  // Usamos 'paper' para hacer que abarque toda la serie de datos
+      yref: 'y',      // Usamos el sistema de referencia del eje Y
+      fillcolor: 'rgba(134, 239, 172, 0.15)',  // Color del rectángulo (verde claro)
+      line: {
+        color: '#22C55E',  // Color del borde del rectángulo
+        width: 1,      // Ancho del borde
+      },
+      text: 'Safe Zone', // Texto dentro del rectángulo
+      font: {
+        family: 'Arial, sans-serif', // Tipo de letra
+        size: 14, // Tamaño de la fuente
+        color: '#2D6A4F', // Color del texto (verde oscuro)
+      },
+      align: 'center',  // Alineación del texto horizontal
+      valign: 'middle', // Alineación del texto vertical
+      layer: 'below',  // Asegura que el rectángulo quede debajo de las series de datos
+    },
+    {
+      type: 'rect',  // El tipo de la forma es un rectángulo
+      x0: '2024-09-22',  // Fecha de inicio (22 de septiembre)
+      x1: '2024-09-21',  // Fecha de fin (21 de septiembre)
+      y0: 0,     // Comienza desde el valor más bajo posible del eje Y
+      y1: 30,      // Termina en el valor más alto posible del eje Y
+      xref: 'x',         // Referencia en el eje X (por fechas)
+      yref: 'y',         // Referencia en el eje Y (por valores)
+      fillcolor: 'rgba(0,0,0,0)',  // Fondo transparente
+      line: {
+        color: 'black',  // Color de la línea
+        width: 2,        // Ancho de la línea
+        dash: 'dot',     // Estilo punteado
+      },
+      text: 'Desconexion', // Texto dentro del rectángulo
+      font: {
+        family: 'Arial, sans-serif', // Tipo de letra
+        size: 14, // Tamaño de la fuente
+        color: 'black', // Color del texto
+      },
+      align: 'center',  // Alineación del texto horizontal
+      valign: 'middle', // Alineación del texto vertical
+      layer: 'above',  // Asegura que el rectángulo quede por encima de las series de datos      
+    }
+  ],
+  plot_bgcolor: '#F8F9F',  // Color de fondo del área de trazado (gráfico)
+  paper_bgcolor: '#F8F9F'
 };
-const telemetria :any = []
+const telemetria: any = []
 
-if(datas2.Telemetry.internal_temperature.avg.value){
+if (datas2.Telemetry.internal_temperature.avg.value) {
   telemetria.push({
     name: "Temperatura",
     type: "line",
-    mode: "lines",   
+    mode: "lines",
     line: {
-      color: 'rgba(255, 0, 0, 1)', 
+      color: '#2393F4',
       width: 1,
-    }, 
+    },
     x: datas2.Telemetry.internal_temperature.avg.timestamp,
-    y: datas2.Telemetry.internal_temperature.avg.value,    
+    y: datas2.Telemetry.internal_temperature.avg.value,
+    hovertemplate: '%{y}',
   })
-}
-if(datas2.Telemetry.voltage_consumption.avg.value){
   telemetria.push({
-    name: "Voltaje",
-    type: "line",
-    mode: "lines",   
-    line: {
-      color: 'yellow', 
-      width: 1,
-    }, 
-    x: datas2.Telemetry.voltage_consumption.avg.timestamp,
-    y: datas2.Telemetry.voltage_consumption.avg.value,    
-  })
+    name: "Alerta Alta Demanda Compresor",
+    type: "scatter",
+    mode: "markers",
+    x: ["2024-09-22 00:00:00"],
+    y: [-4],
+    hovertemplate: 'Alerta Alta Demanda Compresor',
+    marker: {
+      size: 20,
+      symbol: 'circle',
+      color: 'rgba(0,0,0,0)', // Hacer el marcador invisible
+    },
+  },
+    {
+      name: "Alerta Alta Demanda Compresor",
+      type: "scatter",
+      mode: "markers",
+      x: ["2024-09-24 00:00:00"],
+      y: [-4],
+      hovertemplate: 'Alerta Alta Demanda Compresor',
+      marker: {
+        size: 20,
+        symbol: 'circle',
+        color: 'rgba(0,0,0,0)', // Hacer el marcador invisible
+      },
+    }
+  )
 }
-console.log(telemetria)
+
+
 const CombinedChart = () => {
   return (
     <Plot
       data={telemetria}
       layout={layout}
       config={{ responsive: true }}
-      style={{width:'100%',height:'100%'}}
+      style={{ width: '100%', height: '100%' }}
     />
   );
 };
