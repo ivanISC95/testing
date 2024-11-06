@@ -125,7 +125,8 @@ if (datas2.Telemetry.internal_temperature.avg.value) {
       mode: "markers",
       x: ["2024-09-24 00:00:00"],
       y: [-4],
-      hovertemplate: 'Alerta Alta Demanda Compresor',
+      customdata : ['este es un msj'],
+      hovertemplate: 'Alerta Alta Demanda Compresor <br><br>'+'%{customdata}',
       marker: {
         size: 20,
         symbol: 'circle',
