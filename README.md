@@ -49,3 +49,5 @@ export default tseslint.config({
 })
 ```
 # testing
+
+https://github.com/plotly/plotly.js/issues/330
