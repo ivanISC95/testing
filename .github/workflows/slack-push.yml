@@ -23,4 +23,5 @@ jobs:
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
           GITHUB_ACTOR: ${{ github.actor }}
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          GITHUB_RAMA : ${{ github.ref_name }}
         run: python send_to_slack.py
